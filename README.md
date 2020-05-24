@@ -1,4 +1,4 @@
-## rbl-bi
+## admin-common
 
 #### 介绍
 这是一个spring boot项目骨架，帮助快速构建应用开发环境和基础结构。
