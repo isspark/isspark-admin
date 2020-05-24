@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isspark.admin.mapper.SysResourceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.isspark.admin.domain.entity.SysResource">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="value" property="value" />
+        <result column="url" property="url" />
+        <result column="type" property="type" />
+        <result column="sort" property="sort" />
+        <result column="parent_id" property="parentId" />
+        <result column="remark" property="remark" />
+        <result column="creat_time" property="creatTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, value, url, type, sort, parent_id, remark, creat_time, update_time
+    </sql>
+
+    <select id="getResourcesByUserName" resultMap="BaseResultMap">
+        select r.*
+        from sys_resource r
+                 left join sys_role_resource srr on r.id = srr.resource_id
+                 left join sys_role sr on srr.role_id = sr.id
+                 left join sys_user_role sur on sr.id = sur.role_id
+                 left join sys_user su on sur.user_id = su.id
+        where su.name = #{username}
+    </select>
+
+</mapper>

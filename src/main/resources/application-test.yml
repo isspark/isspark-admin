@@ -1,0 +1,15 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /bi
+spring:
+  application:
+    name: rbl-bi
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/rbl_bi?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=CTT&allowMultiQueries=true
+      username: root
+      password: shouwang13
+mybatis-plus:
+  mapper-locations: classpath:mapping/**/*.xml

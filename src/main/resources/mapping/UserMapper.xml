@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isspark.admin.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.isspark.admin.domain.entity.User">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+        <result column="email" property="email"/>
+        <result column="register_time" property="registerTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, age, email
+    </sql>
+
+    <resultMap id="voMap" type="com.isspark.admin.domain.vo.response.UserRespVO">
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+        <result column="email" property="email"/>
+        <result column="register_time" property="registerTime"/>
+    </resultMap>
+
+    <select id="find" resultMap="voMap" parameterType="com.isspark.admin.domain.vo.request.UserReqVO">
+        select * from user where 1=1
+        <if test="reqVO.age != null">
+            and age = #{reqVO.age}
+        </if>
+        <if test="reqVO.name != null and reqVO.name !=''">
+            and name = #{reqVO.name}
+        </if>
+
+        <if test="reqVO.time != null">
+            <![CDATA[ and register_time <= #{reqVO.time} ]]>
+        </if>
+    </select>
+
+</mapper>

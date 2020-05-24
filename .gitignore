@@ -1,0 +1,10 @@
+## maven
+.mvn/
+target/
+
+## idea
+.idea/
+*.iml
+
+## log
+logs/
