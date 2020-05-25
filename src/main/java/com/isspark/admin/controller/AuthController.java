@@ -53,7 +53,7 @@ public class AuthController {
     public Result login(@Valid LoginVo vo) {
         //添加用户认证信息
         QueryWrapper wrapper = new QueryWrapper();
-        wrapper.eq("name", vo.getName());
+        wrapper.eq("mobile", vo.getUsername());
         SysUser user = userService.getOne(wrapper);
         if (ObjectUtils.isEmpty(user)) {
             return Result.fail(ResultEnum.LOGIN_ERROR);

@@ -21,7 +21,7 @@ public class LoginVo {
 
     @ApiModelProperty(value = "用户名",dataType = "string")
     @NotBlank(message = "用户名不能为空！")
-    private String name;
+    private String username;
 
     @ApiModelProperty(value = "密码",dataType = "string")
     @NotBlank(message = "密码不能为空！")

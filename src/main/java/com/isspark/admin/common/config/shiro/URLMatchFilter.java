@@ -2,6 +2,7 @@ package com.isspark.admin.common.config.shiro;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.isspark.admin.common.consts.SystemConst;
 import com.isspark.admin.common.domain.Result;
 import com.isspark.admin.common.enums.ResultEnum;
 import com.isspark.admin.domain.entity.SysResource;
@@ -10,8 +11,6 @@ import com.isspark.admin.utils.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.PathMatchingFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashSet;
@@ -44,8 +44,16 @@ public class URLMatchFilter extends PathMatchingFilter {
     protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue)
             throws Exception {
         String requestURI = getPathWithinApplication(request);
-        log.info("request url:{}",requestURI);
-        String token = WebUtils.toHttp(request).getHeader("token");
+        log.info("request url:{}", requestURI);
+        HttpServletRequest httpServletRequest = WebUtils.toHttp(request);
+        String token = httpServletRequest.getHeader(SystemConst.TOKEN_NAME);
+
+        Set<String> urls = getDontNeedPermissionUrl();
+        boolean isPass = isPass(requestURI, urls);
+        if (isPass) {
+            return true;
+        }
+
         // 如果没有登录，就跳转到登录页面
         if (StringUtils.isBlank(token)) {
             setResponse(response);
@@ -53,34 +61,29 @@ public class URLMatchFilter extends PathMatchingFilter {
         }
 
         // 看看这个路径权限里有没有维护，如果没有维护，一律放行(也可以改为一律不放行)
-        Set<String> urls = getDontNeedPermissionUrl();
-        boolean isPass = isPass(requestURI,urls);
-        if (isPass) {
+        boolean hasPermission = false;
+        String userName = JWTUtil.getUsername(token);
+        if (StringUtils.isBlank(userName)) {
+            setResponse(response);
+            return false;
+        }
+        List<SysResource> permissionUrls = resourceService.getResourceByUserName(userName);
+        if (CollectionUtils.isEmpty(permissionUrls)) {
+            setResponse(response);
+            return false;
+        }
+        hasPermission = permissionUrls.stream().anyMatch(tmp -> requestURI.contains(tmp.getUrl()));
+        if (hasPermission) {
             return true;
         } else {
-            boolean hasPermission = false;
-            String userName = JWTUtil.getUsername(token);
-            if(StringUtils.isBlank(userName)){
-                setResponse(response);
-                return false;
-            }
-            List<SysResource> permissionUrls = resourceService.getResourceByUserName(userName);
-            if(CollectionUtils.isEmpty(permissionUrls)){
-                setResponse(response);
-                return false;
-            }
-            hasPermission = permissionUrls.stream().anyMatch(tmp -> requestURI.contains(tmp.getUrl()));
-            if (hasPermission){
-                return true;
-            } else {
-                setResponse(response);
-                return false;
-            }
+            setResponse(response);
+            return false;
         }
+
 
     }
 
-    private Boolean isPass(String url,Set<String> permsUrls){
+    private Boolean isPass(String url, Set<String> permsUrls) {
         return permsUrls.stream().anyMatch(tmp -> url.contains(tmp));
 
     }
@@ -92,9 +95,10 @@ public class URLMatchFilter extends PathMatchingFilter {
         httpResponse.getWriter().write(JSONUtil.toJsonStr(Result.fail(ResultEnum.UNAUTH)));
     }
 
-    private Set<String> getDontNeedPermissionUrl(){
+    private Set<String> getDontNeedPermissionUrl() {
         Set<String> urls = new HashSet<>();
         urls.add("/login");
+        urls.add("/logout");
         //exclude api doc page
         urls.add("/swagger-resources");
         urls.add("/v2/api-docs");

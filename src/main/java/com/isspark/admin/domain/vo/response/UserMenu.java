@@ -21,7 +21,7 @@ public class UserMenu {
 
     private String url;
 
-    private String type;
+    private Integer type;
 
     private Integer sort;
 

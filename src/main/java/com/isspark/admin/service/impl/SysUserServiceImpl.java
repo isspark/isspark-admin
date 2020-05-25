@@ -12,6 +12,7 @@ import com.isspark.admin.mapper.SysUserMapper;
 import com.isspark.admin.service.SysResourceService;
 import com.isspark.admin.service.SysUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
  * @since 2020-05-24
  */
 @Service
+@Slf4j
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     @Autowired
@@ -44,59 +46,60 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     SysResourceService resourceService;
 
     @Override
-    public UserInfoRespVo getUserInfo(@NotBlank String username){
+    public UserInfoRespVo getUserInfo(@NotBlank String username) {
         UserInfoRespVo result = new UserInfoRespVo();
         QueryWrapper wrapper = new QueryWrapper();
-        wrapper.eq("name",username);
+        wrapper.eq("name", username);
         SysUser user = userMapper.selectOne(wrapper);
-        if(ObjectUtils.isEmpty(user)){
+        if (ObjectUtils.isEmpty(user)) {
             try {
                 throw new BusinessException("用户信息不存在");
             } catch (BusinessException e) {
                 e.printStackTrace();
             }
         }
-        BeanUtils.copyProperties(user,result);
+        BeanUtils.copyProperties(user, result);
         List<SysResource> resources = resourceService.getResourceByUserName(username);
-        if(CollectionUtils.isEmpty(resources)){
+        if (CollectionUtils.isEmpty(resources)) {
             return result;
         }
         result.setMenus(toTreeMenus(resources));
         return result;
     }
 
-    protected List<UserMenu> toTreeMenus(List<SysResource> resources){
+    protected List<UserMenu> toTreeMenus(List<SysResource> resources) {
         List<UserMenu> parents = new ArrayList<>();
         List<UserMenu> allMenu = new ArrayList<>();
         resources.forEach(res -> {
             UserMenu menu = new UserMenu();
-            BeanUtils.copyProperties(res,menu);
-            if(ObjectUtils.isNotEmpty(res)){
+            BeanUtils.copyProperties(res, menu);
+            if (ObjectUtils.isEmpty(res.getParentId())) {
                 parents.add(menu);
             }
             allMenu.add(menu);
         });
         List<UserMenu> result = parents.stream().sorted(Comparator.comparing(UserMenu::getSort)).collect(Collectors.toList());
         result.forEach(tmp -> {
-            getChildrenMenu(tmp,allMenu);
+            getChildrenMenu(tmp, allMenu);
         });
         return result;
     }
 
-    protected void getChildrenMenu(UserMenu menu,List<UserMenu> menus){
+    protected void getChildrenMenu(UserMenu menu, List<UserMenu> menus) {
         List<UserMenu> childrens = new ArrayList<>();
-        menus.forEach( tmp ->{
-            if(menu.getId().equals(tmp.getParentId())){
+        menus.forEach(tmp -> {
+            if (ObjectUtils.isNotEmpty(tmp.getParentId()) && menu.getId().intValue() == tmp.getParentId()) {
                 childrens.add(tmp);
             }
         });
-        if(CollectionUtils.isNotEmpty(childrens)){
+        if (CollectionUtils.isNotEmpty(childrens)) {
             List<UserMenu> sorted = childrens.stream().sorted(Comparator.comparing(UserMenu::getSort)).collect(Collectors.toList());
             menu.setChildren(sorted);
-            sorted.forEach(tmp ->{
-                getChildrenMenu(tmp,menus);
+            sorted.forEach(tmp -> {
+                getChildrenMenu(tmp, menus);
             });
         }
         return;
     }
+
 }
