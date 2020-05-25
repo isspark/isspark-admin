@@ -29,14 +29,14 @@ public class ShiroConfig {
      * 先走 filter ，然后 filter 如果检测到请求头存在 token，则用 token 去 login，走 Realm 去验证
      */
     @Bean
-    public ShiroFilterFactoryBean factory(SecurityManager securityManager, Map<String, String> shiroFilterChainMap) {
+    public ShiroFilterFactoryBean factory(SecurityManager securityManager, Map<String, String> shiroFilterChainMap,URLMatchFilter urlMatchFilter) {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
 
         // 添加自己的过滤器并且取名为jwt
         Map<String, Filter> filterMap = new LinkedHashMap<>();
         //设置我们自定义的JWT过滤器
         filterMap.put("jwt", new JWTFilter());
-        filterMap.put("url",new URLMatchFilter());
+        filterMap.put("url",urlMatchFilter);
         factoryBean.setFilters(filterMap);
         factoryBean.setSecurityManager(securityManager);
         // 设置无权限时跳转的 url;

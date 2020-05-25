@@ -4,7 +4,7 @@ server:
     context-path: /admin
 spring:
   application:
-    name: rbl-bi
+    name: admin
   datasource:
     druid:
       driver-class-name: com.p6spy.engine.spy.P6SpyDriver

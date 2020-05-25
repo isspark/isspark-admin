@@ -1,6 +1,9 @@
 package com.isspark.admin.common.exception;
 
 import com.isspark.admin.common.domain.Result;
+import com.isspark.admin.common.enums.ResultEnum;
+import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -74,6 +77,16 @@ public class GlobalExceptionHandler {
             msg = errors.get(0).getDefaultMessage();
         }
         return Result.fail(msg);
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public Result handleAuthorizationException(AuthorizationException exception){
+        return Result.fail(ResultEnum.UNAUTH.getCode(),exception.getMessage());
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public Result handleAuthorizationException(UnauthorizedException exception){
+        return Result.fail(ResultEnum.UNAUTH.getCode(),exception.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

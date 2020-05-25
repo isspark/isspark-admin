@@ -25,6 +25,6 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
 
     @Override
     public List<SysResource> getResourceByUserName(String username) {
-        return null;
+        return resourceMapper.getResourcesByUserName(username);
     }
 }
