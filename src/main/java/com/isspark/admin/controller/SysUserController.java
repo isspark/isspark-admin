@@ -41,5 +41,11 @@ public class SysUserController {
         }
         return Result.success(userService.getUserInfo(username));
     }
+
+    @GetMapping(value = "/list")
+    @ApiOperation(value = "用户列表", notes = "用户列表", response = Result.class)
+    public Result list(String username,String mobile){
+        return Result.success(userService.list(username,mobile));
+    }
 }
 

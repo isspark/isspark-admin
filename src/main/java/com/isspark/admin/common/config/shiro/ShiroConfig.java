@@ -8,7 +8,9 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Filter;
@@ -29,6 +31,7 @@ public class ShiroConfig {
      * 先走 filter ，然后 filter 如果检测到请求头存在 token，则用 token 去 login，走 Realm 去验证
      */
     @Bean
+    @ConditionalOnProperty("auth.enable")
     public ShiroFilterFactoryBean factory(SecurityManager securityManager, Map<String, String> shiroFilterChainMap,URLMatchFilter urlMatchFilter) {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
 
@@ -68,6 +71,8 @@ public class ShiroConfig {
 //        urls.put("/unauthorized/**", "anon");
         return urls;
     }
+
+
 
     /**
      * 注入 securityManager

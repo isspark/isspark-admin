@@ -36,8 +36,8 @@ import java.util.List;
  * @since 2020-04-09
  */
 @RestController
-@RequestMapping("/user")
-@Api(value = "用户服务", tags = "用户服务")
+@RequestMapping("/test")
+@Api(value = "测试DEMO", tags = "测试DEMO")
 @Slf4j
 @Validated
 public class TestController {

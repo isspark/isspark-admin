@@ -6,6 +6,7 @@ import com.isspark.admin.domain.entity.SysResource;
 import com.isspark.admin.domain.entity.SysRole;
 import com.isspark.admin.domain.entity.SysUser;
 import com.isspark.admin.domain.entity.SysUserRole;
+import com.isspark.admin.domain.vo.response.SysUserRespVo;
 import com.isspark.admin.domain.vo.response.UserInfoRespVo;
 import com.isspark.admin.domain.vo.response.UserMenu;
 import com.isspark.admin.mapper.SysUserMapper;
@@ -64,6 +65,27 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             return result;
         }
         result.setMenus(toTreeMenus(resources));
+        return result;
+    }
+
+    @Override
+    public List<SysUserRespVo> list(String username, String mobile) {
+            List<SysUserRespVo> result = new ArrayList<>();
+        QueryWrapper wrapper = new QueryWrapper();
+        if(StringUtils.isNotBlank(username)){
+            wrapper.eq("name",username);
+        }
+        if(StringUtils.isNotBlank(mobile)){
+            wrapper.eq("mobile",mobile);
+        }
+        List<SysUser> list = this.list(wrapper);
+        if(CollectionUtils.isNotEmpty(list)){
+            list.forEach( tmp -> {
+                SysUserRespVo data = new SysUserRespVo();
+                BeanUtils.copyProperties(tmp,data);
+                result.add(data);
+            });
+        }
         return result;
     }
 

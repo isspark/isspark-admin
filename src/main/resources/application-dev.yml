@@ -8,9 +8,12 @@ spring:
   datasource:
     druid:
       driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-      url: jdbc:p6spy:mysql://localhost:3306/admin?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=CTT&allowMultiQueries=true&&allowPublicKeyRetrieval=true
+#      url: jdbc:p6spy:mysql://localhost:3306/admin?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=CTT&allowMultiQueries=true&&allowPublicKeyRetrieval=true
+#      username: root
+#      password: shouwang13
+      url: jdbc:p6spy:mysql://47.101.138.153:3308/admin?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=CTT&allowMultiQueries=true&&allowPublicKeyRetrieval=true
       username: root
-      password: shouwang13
+      password: ShouWang32!
       validation-query: select 1
 #    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
 #    url: jdbc:p6spy:h2:mem:test
@@ -19,5 +22,9 @@ mybatis-plus:
 shiro:
   web:
     enabled: false
+  enabled: false
+
+# 是否关闭权限认证
+auth:
   enabled: false
 
