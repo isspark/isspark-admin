@@ -26,7 +26,8 @@ public enum ResultEnum {
     /*登录授权错误*/
     INCORRECT_PWD("400","账号密码不匹配！"),
     UNAUTH("401","你没有权限访问该资源！"),
-    LOGIN_ERROR("999","账号或密码错误！");
+    LOGIN_ERROR("999","账号或密码错误！"),
+    BUSINESS_ERROR("998","请求处理失败！");
 
     private String code;
     private String msg;

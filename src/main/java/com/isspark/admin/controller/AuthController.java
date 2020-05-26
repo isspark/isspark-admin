@@ -67,8 +67,8 @@ public class AuthController {
     @GetMapping(value = "/logout")
     @ApiOperation(value = "注销", notes = "注销", response = Result.class)
     public Result logout() {
-        Subject subject = SecurityUtils.getSubject();
-        subject.logout();
+//        Subject subject = SecurityUtils.getSubject();
+//        subject.logout();
         return Result.success();
     }
 

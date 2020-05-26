@@ -7,7 +7,7 @@ package com.isspark.admin.common.exception;
  * @author: xuzheng
  * @create: 2020-05-25 10:51
  **/
-public class BusinessException extends Exception {
+public class BusinessException extends RuntimeException {
 
     public BusinessException(){
         super();

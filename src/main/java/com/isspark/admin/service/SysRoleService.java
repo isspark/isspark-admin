@@ -2,6 +2,7 @@ package com.isspark.admin.service;
 
 import com.isspark.admin.domain.entity.SysRole;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.isspark.admin.domain.vo.request.AddRoleReqVo;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ import java.util.List;
 public interface SysRoleService extends IService<SysRole> {
 
     List<SysRole> getRolesByUserName(String username);
+
+    Boolean addRole(AddRoleReqVo vo);
 }

@@ -3,18 +3,17 @@ package com.isspark.admin.controller;
 
 import com.isspark.admin.common.consts.SystemConst;
 import com.isspark.admin.common.domain.Result;
+import com.isspark.admin.domain.vo.request.AddUserReqVo;
 import com.isspark.admin.service.SysUserService;
 import com.isspark.admin.utils.JWTUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
  * <p>
@@ -46,6 +45,16 @@ public class SysUserController {
     @ApiOperation(value = "用户列表", notes = "用户列表", response = Result.class)
     public Result list(String username,String mobile){
         return Result.success(userService.list(username,mobile));
+    }
+
+    @PostMapping(value = "/add")
+    @ApiOperation(value = "新增用户", notes = "新增用户", response = Result.class)
+    public Result addUser(@RequestBody @Valid AddUserReqVo addUserReqVo){
+        Boolean result = userService.addUser(addUserReqVo);
+        if(result){
+            return Result.success();
+        }
+        return Result.fail("用户添加失败！");
     }
 }
 

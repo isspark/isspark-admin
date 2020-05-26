@@ -31,7 +31,7 @@ public class ShiroConfig {
      * 先走 filter ，然后 filter 如果检测到请求头存在 token，则用 token 去 login，走 Realm 去验证
      */
     @Bean
-    @ConditionalOnProperty("auth.enable")
+    @ConditionalOnProperty("auth.enabled")
     public ShiroFilterFactoryBean factory(SecurityManager securityManager, Map<String, String> shiroFilterChainMap,URLMatchFilter urlMatchFilter) {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
 

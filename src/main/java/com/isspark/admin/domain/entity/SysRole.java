@@ -43,6 +43,11 @@ public class SysRole extends Model<SysRole> {
     private String value;
 
     /**
+     * 描述备注
+     */
+    private String remark;
+
+    /**
      * 排序
      */
     private Integer sort;

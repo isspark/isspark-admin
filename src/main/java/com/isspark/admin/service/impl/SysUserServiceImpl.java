@@ -6,6 +6,7 @@ import com.isspark.admin.domain.entity.SysResource;
 import com.isspark.admin.domain.entity.SysRole;
 import com.isspark.admin.domain.entity.SysUser;
 import com.isspark.admin.domain.entity.SysUserRole;
+import com.isspark.admin.domain.vo.request.AddUserReqVo;
 import com.isspark.admin.domain.vo.response.SysUserRespVo;
 import com.isspark.admin.domain.vo.response.UserInfoRespVo;
 import com.isspark.admin.domain.vo.response.UserMenu;
@@ -87,6 +88,21 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             });
         }
         return result;
+    }
+
+    @Override
+    public boolean addUser(AddUserReqVo vo){
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("name",vo.getName());
+        wrapper.or();
+        wrapper.eq("mobile",vo.getMobile());
+        SysUser user = this.getOne(wrapper);
+        if(ObjectUtils.isNotEmpty(user)){
+            throw new BusinessException("用户已存在！");
+        }
+        user = new SysUser();
+        BeanUtils.copyProperties(vo,user);
+        return this.save(user);
     }
 
     protected List<UserMenu> toTreeMenus(List<SysResource> resources) {

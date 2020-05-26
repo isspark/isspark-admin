@@ -29,7 +29,7 @@ import java.util.Set;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     public Result handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         StringBuilder errorInfo = new StringBuilder();
         BindingResult bindingResult = exception.getBindingResult();
@@ -87,6 +87,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnauthorizedException.class)
     public Result handleAuthorizationException(UnauthorizedException exception){
         return Result.fail(ResultEnum.UNAUTH.getCode(),exception.getMessage());
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public Result handleAuthorizationException(BusinessException exception){
+        return Result.fail(ResultEnum.BUSINESS_ERROR.getCode(),exception.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
