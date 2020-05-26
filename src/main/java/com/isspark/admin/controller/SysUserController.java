@@ -4,6 +4,7 @@ package com.isspark.admin.controller;
 import com.isspark.admin.common.consts.SystemConst;
 import com.isspark.admin.common.domain.Result;
 import com.isspark.admin.domain.vo.request.AddUserReqVo;
+import com.isspark.admin.domain.vo.request.UserPageReqVo;
 import com.isspark.admin.service.SysUserService;
 import com.isspark.admin.utils.JWTUtil;
 import io.swagger.annotations.Api;
@@ -39,6 +40,12 @@ public class SysUserController {
             return Result.fail("用户信息获取失败");
         }
         return Result.success(userService.getUserInfo(username));
+    }
+
+    @GetMapping(value = "/page")
+    @ApiOperation(value = "用户分页", notes = "用户分页", response = Result.class)
+    public Result page(UserPageReqVo vo) {
+        return Result.success(userService.page(vo));
     }
 
     @GetMapping(value = "/list")

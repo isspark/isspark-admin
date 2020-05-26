@@ -21,6 +21,18 @@
         id, name, real_name, sex, status, mobile, type, password, create_time, update_time
     </sql>
 
+    <select id="page" resultMap="BaseResultMap" parameterType="com.isspark.admin.domain.vo.request.UserPageReqVo">
+        select 
+            <include refid="Base_Column_List"></include>
+        from system_user 
+        where 1=1
+        <if test="name !=null and name !=''">
+            name = #{name}
+        </if>
+        <if test="mobile !=null and mobile !=''">
+            mobile = #{mobile}
+        </if>
+    </select>
 
 
 </mapper>

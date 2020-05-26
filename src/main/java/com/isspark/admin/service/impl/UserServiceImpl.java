@@ -53,6 +53,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public IPage<UserRespVO> find(UserReqVO reqVO) {
-        return userMapper.find(new Page<>(reqVO.getPageIndex(),reqVO.getSize()),reqVO);
+        return userMapper.find(new Page<>(reqVO.getCurrentPage(),reqVO.getPageSize()),reqVO);
     }
 }

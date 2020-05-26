@@ -1,10 +1,12 @@
 package com.isspark.admin.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.isspark.admin.common.exception.BusinessException;
 import com.isspark.admin.domain.entity.SysRole;
 import com.isspark.admin.domain.entity.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.isspark.admin.domain.vo.request.AddUserReqVo;
+import com.isspark.admin.domain.vo.request.UserPageReqVo;
 import com.isspark.admin.domain.vo.response.SysUserRespVo;
 import com.isspark.admin.domain.vo.response.UserInfoRespVo;
 
@@ -26,4 +28,6 @@ public interface SysUserService extends IService<SysUser> {
     List<SysUserRespVo> list(String username,String mobile);
 
     boolean addUser(AddUserReqVo vo);
+
+    IPage<SysUserRespVo> page(UserPageReqVo vo);
 }

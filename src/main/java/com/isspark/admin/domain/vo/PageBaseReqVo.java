@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 /**
@@ -18,8 +19,8 @@ import java.util.Date;
 public class PageBaseReqVo {
 
     @ApiModelProperty(value = "页码",dataType = "int",required = true)
-    private Integer pageIndex =1;
+    private Integer currentPage =1;
 
     @ApiModelProperty(value = "页面大小",dataType = "int",required = true)
-    private Integer size = 1;
+    private Integer pageSize = 1;
 }

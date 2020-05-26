@@ -1,12 +1,17 @@
 package com.isspark.admin.service.impl;
 
+import cn.hutool.core.bean.copier.BeanCopier;
+import cn.hutool.core.collection.ListUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.isspark.admin.common.exception.BusinessException;
 import com.isspark.admin.domain.entity.SysResource;
 import com.isspark.admin.domain.entity.SysRole;
 import com.isspark.admin.domain.entity.SysUser;
 import com.isspark.admin.domain.entity.SysUserRole;
 import com.isspark.admin.domain.vo.request.AddUserReqVo;
+import com.isspark.admin.domain.vo.request.UserPageReqVo;
 import com.isspark.admin.domain.vo.response.SysUserRespVo;
 import com.isspark.admin.domain.vo.response.UserInfoRespVo;
 import com.isspark.admin.domain.vo.response.UserMenu;
@@ -14,8 +19,10 @@ import com.isspark.admin.mapper.SysUserMapper;
 import com.isspark.admin.service.SysResourceService;
 import com.isspark.admin.service.SysUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.isspark.admin.utils.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -88,6 +95,25 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             });
         }
         return result;
+    }
+
+    @Override
+    public IPage<SysUserRespVo> page(UserPageReqVo vo){
+//        IPage usersPage = userMapper.page(new Page<>(vo.getCurrentPage(),vo.getPageSize()),vo);
+        QueryWrapper wrapper = new QueryWrapper();
+        if(StringUtils.isNotBlank(vo.getUsername())){
+            wrapper.eq("name",vo.getUsername());
+        }
+        if(StringUtils.isNotBlank(vo.getMobile())){
+            wrapper.eq("mobile",vo.getMobile());
+        }
+        IPage usersPage = this.page(new Page<>(vo.getCurrentPage(),vo.getPageSize()),wrapper);
+        List<SysUser> userList = usersPage.getRecords();
+        if(CollectionUtils.isEmpty(userList)){
+            return new Page<>(vo.getCurrentPage(),vo.getPageSize());
+        }
+        List<SysUserRespVo> result = BeanUtil.copyListProperties(userList,SysUserRespVo::new);
+        return usersPage.setRecords(result);
     }
 
     @Override
