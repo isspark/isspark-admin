@@ -4,15 +4,20 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.isspark.admin.common.exception.BusinessException;
 import com.isspark.admin.domain.entity.SysRole;
 import com.isspark.admin.domain.vo.request.AddRoleReqVo;
+import com.isspark.admin.domain.vo.response.TreeRoleRespVo;
 import com.isspark.admin.mapper.SysRoleMapper;
 import com.isspark.admin.service.SysRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -47,5 +52,49 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         BeanUtils.copyProperties(vo,role);
         Boolean result = this.save(role);
         return result;
+    }
+
+    @Override
+    public List<TreeRoleRespVo> getTreeRoles(){
+        List<SysRole> roles = this.list();
+        if(CollectionUtils.isEmpty(roles)){
+            return null;
+        }
+        return toTreeMenus(roles);
+    }
+
+    protected List<TreeRoleRespVo> toTreeMenus(List<SysRole> resources) {
+        List<TreeRoleRespVo> parents = new ArrayList<>();
+        List<TreeRoleRespVo> allMenu = new ArrayList<>();
+        resources.forEach(res -> {
+            TreeRoleRespVo menu = new TreeRoleRespVo();
+            BeanUtils.copyProperties(res, menu);
+            if (ObjectUtils.isEmpty(res.getParentId())) {
+                parents.add(menu);
+            }
+            allMenu.add(menu);
+        });
+        List<TreeRoleRespVo> result = parents.stream().sorted(Comparator.comparing(TreeRoleRespVo::getSort)).collect(Collectors.toList());
+        result.forEach(tmp -> {
+            getChildrenMenu(tmp, allMenu);
+        });
+        return result;
+    }
+
+    protected void getChildrenMenu(TreeRoleRespVo menu, List<TreeRoleRespVo> menus) {
+        List<TreeRoleRespVo> childrens = new ArrayList<>();
+        menus.forEach(tmp -> {
+            if (ObjectUtils.isNotEmpty(tmp.getParentId()) && menu.getId().intValue() == tmp.getParentId()) {
+                childrens.add(tmp);
+            }
+        });
+        if (CollectionUtils.isNotEmpty(childrens)) {
+            List<TreeRoleRespVo> sorted = childrens.stream().sorted(Comparator.comparing(TreeRoleRespVo::getSort)).collect(Collectors.toList());
+            menu.setChildren(sorted);
+            sorted.forEach(tmp -> {
+                getChildrenMenu(tmp, menus);
+            });
+        }
+        return;
     }
 }

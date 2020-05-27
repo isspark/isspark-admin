@@ -4,6 +4,7 @@ package com.isspark.admin.controller;
 import com.isspark.admin.common.consts.SystemConst;
 import com.isspark.admin.common.domain.Result;
 import com.isspark.admin.domain.vo.request.AddUserReqVo;
+import com.isspark.admin.domain.vo.request.UpdateUserReqVo;
 import com.isspark.admin.domain.vo.request.UserPageReqVo;
 import com.isspark.admin.service.SysUserService;
 import com.isspark.admin.utils.JWTUtil;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 /**
  * <p>
@@ -29,8 +31,13 @@ import javax.validation.Valid;
 @RequestMapping("/user")
 public class SysUserController {
 
-    @Autowired
+    private final
     SysUserService userService;
+
+    @Autowired
+    public SysUserController(SysUserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping(value = "/info")
     @ApiOperation(value = "用户信息", notes = "用户信息", response = Result.class)
@@ -57,11 +64,30 @@ public class SysUserController {
     @PostMapping(value = "/add")
     @ApiOperation(value = "新增用户", notes = "新增用户", response = Result.class)
     public Result addUser(@RequestBody @Valid AddUserReqVo addUserReqVo){
-        Boolean result = userService.addUser(addUserReqVo);
+        boolean result = userService.addUser(addUserReqVo);
         if(result){
             return Result.success();
         }
         return Result.fail("用户添加失败！");
+    }
+    @DeleteMapping(value = "/delete")
+    @ApiOperation(value = "删除用户", notes = "删除用户", response = Result.class)
+    public Result deleteUser(@RequestParam("userId") @NotBlank(message = "用户ID不能为空！") Integer userId){
+        boolean result = userService.deleteUserAndUserRole(userId);
+        if(result){
+            return Result.success();
+        }
+        return Result.fail("用户删除失败");
+    }
+
+    @PostMapping(value = "/update")
+    @ApiOperation(value = "修改用户", notes = "修改用户", response = Result.class)
+    public Result updateUser(@RequestBody @Valid UpdateUserReqVo vo){
+        Boolean result = userService.updateUserAndUserRole(vo);
+        if(result){
+            return Result.success();
+        }
+        return Result.fail("用户修改失败！");
     }
 }
 

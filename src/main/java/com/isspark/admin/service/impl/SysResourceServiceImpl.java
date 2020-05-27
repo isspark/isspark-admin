@@ -37,7 +37,6 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
 
     @Override
     public List<ResourceRespVo> getTreeResources() {
-        List<ResourceRespVo> respList = new ArrayList<>();
         List<SysResource> resources = this.list();
         if (CollectionUtils.isEmpty(resources)) {
             return null;

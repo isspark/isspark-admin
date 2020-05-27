@@ -1,7 +1,5 @@
 package com.isspark.admin.domain.vo.request;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
@@ -10,8 +8,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
-import java.util.Date;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -26,8 +23,10 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("sys_user")
-public class AddUserReqVo extends Model<AddUserReqVo> {
+public class UpdateUserReqVo extends Model<UpdateUserReqVo> {
 
+    @NotNull(message = "用户ID不能为空!")
+    private Long id;
 
     /**
      * 用户名
@@ -68,4 +67,5 @@ public class AddUserReqVo extends Model<AddUserReqVo> {
     private Integer status = 0;
 
     private List<Integer> roleIds;
+
 }

@@ -40,4 +40,6 @@ public class AddRoleReqVo {
      * 父角色ID
      */
     private Long parentId;
+
+    private Long sonId;
 }

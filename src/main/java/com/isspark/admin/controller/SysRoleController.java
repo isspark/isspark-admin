@@ -33,6 +33,12 @@ public class SysRoleController {
         return Result.success(roleService.list());
     }
 
+    @GetMapping(value = "/list/tree")
+    @ApiOperation(value = "角色树", notes = "角色树", response = Result.class)
+    public Result tree(){
+        return Result.success(roleService.getTreeRoles());
+    }
+
     @PostMapping(value = "/add")
     @ApiOperation(value = "新增角色", notes = "新增角色", response = Result.class)
     public Result add(@RequestBody @Valid AddRoleReqVo vo){

@@ -3,6 +3,9 @@ package com.isspark.admin.service;
 import com.isspark.admin.domain.entity.SysUserRole;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
 /**
  * <p>
  * 用户角色表 服务类
@@ -13,4 +16,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface SysUserRoleService extends IService<SysUserRole> {
 
+    Boolean updateUserRole(List<Integer> roleIds, @NotNull Long userId);
+
+    Boolean deletUserRoleByUserId(Integer userId);
+
+    List<Integer> getRoleIdsByUserId(Integer userId);
 }

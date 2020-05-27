@@ -6,11 +6,13 @@ import com.isspark.admin.domain.entity.SysRole;
 import com.isspark.admin.domain.entity.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.isspark.admin.domain.vo.request.AddUserReqVo;
+import com.isspark.admin.domain.vo.request.UpdateUserReqVo;
 import com.isspark.admin.domain.vo.request.UserPageReqVo;
 import com.isspark.admin.domain.vo.response.SysUserRespVo;
 import com.isspark.admin.domain.vo.response.UserInfoRespVo;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -23,6 +25,11 @@ import java.util.List;
  */
 public interface SysUserService extends IService<SysUser> {
 
+    /**
+     *  根据用户名获取用户信息VO
+     * @param username 用户名
+     * @return
+     */
     UserInfoRespVo getUserInfo(String username);
 
     List<SysUserRespVo> list(String username,String mobile);
@@ -30,4 +37,8 @@ public interface SysUserService extends IService<SysUser> {
     boolean addUser(AddUserReqVo vo);
 
     IPage<SysUserRespVo> page(UserPageReqVo vo);
+
+    Boolean updateUserAndUserRole(UpdateUserReqVo vo);
+
+    Boolean deleteUserAndUserRole(Integer userId);
 }

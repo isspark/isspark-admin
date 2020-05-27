@@ -2,6 +2,7 @@ package com.isspark.admin.mapper;
 
 import com.isspark.admin.domain.entity.SysUserRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author xuzheng
  * @since 2020-05-24
  */
+@Repository
 public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
 
 }

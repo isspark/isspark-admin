@@ -44,6 +44,13 @@ public class SysUserRole extends Model<SysUserRole> {
 
     private Date createTime;
 
+    public SysUserRole(Integer userId, Integer roleId) {
+        this.userId = userId;
+        this.roleId = roleId;
+    }
+
+    public SysUserRole() {
+    }
 
     @Override
     protected Serializable pkVal() {
