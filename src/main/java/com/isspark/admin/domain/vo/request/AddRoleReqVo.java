@@ -3,6 +3,7 @@ package com.isspark.admin.domain.vo.request;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 /**
  * @version V1.0
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class AddRoleReqVo {
 
+    private Long id;
     /**
      * 名称
      */
@@ -41,5 +43,5 @@ public class AddRoleReqVo {
      */
     private Long parentId;
 
-    private Long sonId;
+    private List<Integer> resourceIds;
 }

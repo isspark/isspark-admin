@@ -21,4 +21,6 @@ public interface SysUserRoleService extends IService<SysUserRole> {
     Boolean deletUserRoleByUserId(Integer userId);
 
     List<Integer> getRoleIdsByUserId(Integer userId);
+
+    Boolean deletUserRoleByRoleId(Integer roleId);
 }

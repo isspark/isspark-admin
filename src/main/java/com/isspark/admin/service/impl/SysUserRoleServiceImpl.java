@@ -53,6 +53,13 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
     }
 
     @Override
+    public Boolean deletUserRoleByRoleId(Integer roleId){
+        QueryWrapper<SysUserRole> wrapper = new QueryWrapper<>();
+        wrapper.eq("role_id",roleId);
+        return this.remove(wrapper);
+    }
+
+    @Override
     public List<Integer> getRoleIdsByUserId(Integer userId){
         QueryWrapper<SysUserRole> wrapper = new QueryWrapper<>();
         wrapper.eq("user_id",userId);

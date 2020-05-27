@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 /**
  * <p>
@@ -40,9 +41,19 @@ public class SysRoleController {
     }
 
     @PostMapping(value = "/add")
-    @ApiOperation(value = "新增角色", notes = "新增角色", response = Result.class)
+    @ApiOperation(value = "新增/更新角色", notes = "新增/更新角色", response = Result.class)
     public Result add(@RequestBody @Valid AddRoleReqVo vo){
-        return Result.success(roleService.addRole(vo));
+        return Result.success(roleService.addOrUpdate(vo));
+    }
+
+    @DeleteMapping(value = "/delete")
+    @ApiOperation(value = "删除角色", notes = "删除角色", response = Result.class)
+    public Result deleteRole(@RequestParam("roleId") @NotBlank(message = "角色ID不能为空！") Long roleId){
+        boolean result = roleService.deleteRoleAndResource(roleId);
+        if(result){
+            return Result.success();
+        }
+        return Result.fail("角色删除失败");
     }
 
 }

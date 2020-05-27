@@ -22,4 +22,10 @@ public interface SysRoleService extends IService<SysRole> {
     Boolean addRole(AddRoleReqVo vo);
 
     List<TreeRoleRespVo> getTreeRoles();
+
+    Boolean update(AddRoleReqVo vo);
+
+    Boolean addOrUpdate(AddRoleReqVo vo);
+
+    Boolean deleteRoleAndResource(Long roleId);
 }

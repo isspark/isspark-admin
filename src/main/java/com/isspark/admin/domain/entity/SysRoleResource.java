@@ -44,6 +44,13 @@ public class SysRoleResource extends Model<SysRoleResource> {
 
     private Date createTime;
 
+    public SysRoleResource() {
+    }
+
+    public SysRoleResource(Integer roleId, Integer resourceId) {
+        this.roleId = roleId;
+        this.resourceId = resourceId;
+    }
 
     @Override
     protected Serializable pkVal() {
