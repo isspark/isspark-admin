@@ -48,6 +48,11 @@ public class AddResourceReqVo{
     private Integer type;
 
     /**
+     * 图标
+     */
+    private String icon;
+
+    /**
      * 排序
      */
     private Integer sort;

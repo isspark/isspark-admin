@@ -48,6 +48,11 @@ public class SysResource extends Model<SysResource> {
     private String url;
 
     /**
+     * 图标
+     */
+    private String icon;
+
+    /**
      * 类型：0-菜单，1-页面，2-按钮
      */
     private Integer type;

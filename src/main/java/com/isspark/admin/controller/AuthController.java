@@ -61,6 +61,9 @@ public class AuthController {
         if (!vo.getPassword().equals(user.getPassword())) {
             return Result.fail(ResultEnum.LOGIN_ERROR);
         }
+        if (1 == user.getStatus()) {
+            return Result.fail(ResultEnum.ACCOUNT_DISABLED);
+        }
         return Result.success(JWTUtil.createToken(user.getName()));
     }
 

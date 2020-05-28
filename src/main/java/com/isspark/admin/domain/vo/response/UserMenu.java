@@ -23,6 +23,8 @@ public class UserMenu {
 
     private Integer type;
 
+    private String icon;
+
     private Integer sort;
 
     private String remark;
