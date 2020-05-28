@@ -2,7 +2,9 @@ package com.isspark.admin.controller;
 
 
 import com.isspark.admin.common.domain.Result;
+import com.isspark.admin.domain.vo.request.AddResourceReqVo;
 import com.isspark.admin.service.SysUserRoleService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,7 @@ import javax.validation.constraints.NotNull;
  */
 @RestController
 @RequestMapping("/user/role")
+@Api(value = "用户角色服务", tags = "用户角色服务")
 public class SysUserRoleController {
 
     @Autowired

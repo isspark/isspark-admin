@@ -61,7 +61,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         BeanUtils.copyProperties(vo, role);
         Boolean result = this.save(role);
         if (CollectionUtils.isNotEmpty(vo.getResourceIds())) {
-            roleResourceService.addRoleResourcByRoleId(vo.getResourceIds(), vo.getId());
+            roleResourceService.addRoleResourcByRoleId(vo.getResourceIds(), role.getId());
         }
         return result;
     }

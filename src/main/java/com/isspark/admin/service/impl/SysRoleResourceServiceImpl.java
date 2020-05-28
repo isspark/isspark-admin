@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -29,12 +31,21 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
     @Autowired
     SysRoleResourceService roleResourceService;
 
+    @Override
     public Boolean deleteRoleResourceByRoleId(@NotBlank Long roleId){
         QueryWrapper<SysRoleResource> wrapper = new QueryWrapper<>();
         wrapper.eq("role_id",roleId);
         return this.remove(wrapper);
     }
 
+    @Override
+    public Boolean deleteRoleResourceByResourceId(Long resourceId) {
+        QueryWrapper<SysRoleResource> wrapper = new QueryWrapper<>();
+        wrapper.eq("resource_id",resourceId);
+        return this.remove(wrapper);
+    }
+
+    @Override
     public Boolean addRoleResourcByRoleId(List<Integer> resourceId,Long roleId){
         if(CollectionUtils.isEmpty(resourceId) || ObjectUtils.isEmpty(roleId)){
             throw new BusinessException("插入角色资源失败，缺少必要的参数！");
@@ -42,5 +53,16 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
         List<SysRoleResource> datas = new ArrayList<>();
         resourceId.forEach( tmp -> datas.add(new SysRoleResource(roleId.intValue(),tmp)));
         return this.saveBatch(datas);
+    }
+
+    @Override
+    public List<Integer> getResourceIdsByRoleId(@NotNull Long roleId){
+        QueryWrapper<SysRoleResource> wrapper = new QueryWrapper<>();
+        wrapper.eq("role_id",roleId);
+        List<SysRoleResource> roleResources = this.list(wrapper);
+        if(CollectionUtils.isEmpty(roleResources)){
+            return null;
+        }
+        return roleResources.stream().map(SysRoleResource::getResourceId).collect(Collectors.toList());
     }
 }

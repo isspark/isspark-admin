@@ -4,6 +4,7 @@ import com.isspark.admin.domain.entity.SysRoleResource;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -18,5 +19,9 @@ public interface SysRoleResourceService extends IService<SysRoleResource> {
 
     Boolean deleteRoleResourceByRoleId(Long roleId);
 
+    Boolean deleteRoleResourceByResourceId(Long resourceId);
+
     Boolean addRoleResourcByRoleId(List<Integer> resourceId, Long roleId);
+
+    List<Integer> getResourceIdsByRoleId(@NotNull Long roleId);
 }
