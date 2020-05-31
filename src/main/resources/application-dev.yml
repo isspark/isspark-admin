@@ -19,12 +19,7 @@ spring:
 #    url: jdbc:p6spy:h2:mem:test
 mybatis-plus:
   mapper-locations: classpath:mapping/**/*.xml
-shiro:
-  web:
-    enabled: false
-  enabled: false
-
 # 是否关闭权限认证
 auth:
-  enabled: false
+  enabled: true
 

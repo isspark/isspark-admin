@@ -34,7 +34,6 @@ public class ShiroConfig {
     @ConditionalOnProperty("auth.enabled")
     public ShiroFilterFactoryBean factory(SecurityManager securityManager, Map<String, String> shiroFilterChainMap,URLMatchFilter urlMatchFilter) {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
-
         // 添加自己的过滤器并且取名为jwt
         Map<String, Filter> filterMap = new LinkedHashMap<>();
         //设置我们自定义的JWT过滤器
